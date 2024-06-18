@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
 import JobCard from "@/components/shared/JobCard";
+import React, { useEffect, useState } from "react";
 
-const JobSection = () => {
+const JobPostsSection = () => {
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
@@ -17,17 +17,17 @@ const JobSection = () => {
 
   return (
     <section className="py-8">
-      <h2>Available Jobs</h2>
+      <h2>Current Job Postings</h2>
       <div className="mt-4 flex flex-col gap-y-8">
         {jobs.map((job) => {
           return (
             <JobCard
-              key={job._id}
+              key={job.id}
               _id={job._id}
               title={job.title}
               type={job.type}
               location={job.location}
-              isAdmin={false}
+              isAdmin={true}
             />
           );
         })}
@@ -36,4 +36,4 @@ const JobSection = () => {
   );
 };
 
-export default JobSection;
+export default JobPostsSection;

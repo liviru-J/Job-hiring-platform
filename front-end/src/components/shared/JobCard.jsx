@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";  
 import {
   Card,
   CardContent,
@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/card";
 import { Briefcase, MapPin } from "lucide-react";
 
-const JobSection = ({title, type, location, _id}) => {
+const JobCard = ({ _id, title, type, location, isAdmin }) => {
   return (
-        <Link to={`/job/${_id}`} className="block">
+        <Link to={isAdmin ? `/admin/job/${_id}` : `/job/${_id}`} className="block">
           <Card>
             <CardHeader>
               <CardTitle>{title}</CardTitle>
@@ -32,4 +32,4 @@ const JobSection = ({title, type, location, _id}) => {
   );
 };
 
-export default JobSection;
+export default JobCard;

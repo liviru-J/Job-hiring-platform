@@ -1,55 +1,106 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { Briefcase, MapPin } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@clerk/clerk-react";
 
 const JobPage = () => {
-  const job = {
-    title: "Intern - Software Engineer",
-    description:
-      "We are seeking a motivated and enthusiastic Software Engineering Intern to join our dynamic team. As a Software Engineering Intern, you will have the opportunity to work closely with experienced developers and contribute to real-world projects. This internship is designed to provide valuable hands-on experience, foster professional growth, and enhance your technical skills.",
-    type: "Full-time",
-    location: "Remote",
-    questions: [
-      "Share your academic background and highlight key programming concepts you've mastered. How has your education shaped your current tech skill set ?",
-      "Describe your professional development, emphasizing any certifications obtained. How have these certifications enriched your technical abilities, and can you provide an example of their practical application ?",
-      "Discuss notable projects in your programming experience. What challenges did you face, and how did you apply your skills to overcome them? Highlight the technologies used and the impact of these projects on your overall growth as a prefessional ?",
-    ],
-  };
-
-  const [FormData, setFormData] = useState({
-    FullName: "",
+  const { user, isLoaded, isSignedIn } = useUser();
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [job, setJob] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    fullName: "",
     a1: "",
     a2: "",
     a3: "",
   });
 
-  const handlesubmit = (event) => {
+  useEffect(() => {
+    if (!isLoaded) {
+      return;
+    }
+    if (!isSignedIn) {
+      return navigate("/sign-in");
+    }
+
+    const fetchJob = async () => {
+      const token = await window.Clerk.session.getToken();
+
+      const res = await fetch(`http://localhost:5000/jobs/${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      return data;
+    };
+    fetchJob().then((data) => {
+      setJob(data);
+      setIsLoading(false);
+    });
+  }, [id, isSignedIn, isLoaded, navigate]);
+
+  const handlesubmit = async (event) => {
     event.preventDefault();
-    console.log(FormData);
+    const res = await fetch("http://localhost:5000/jobApplications", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user.user?.id,
+        fullName: formData.fullName,
+        job: id,
+        answers: [formData.a1, formData.a2, formData.a3],
+      }),
+    });
+    setFormData({
+      fullName: "",
+      a1: "",
+      a2: "",
+      a3: "",
+    });
   };
+
+  const handleChange = (event) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
+
+  if (isLoading) {
+    return (
+      <div>
+        <h3>Loading...</h3>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div>
-        <h2>{job.title}</h2>
-        <div className="flex items-center gap-x-4 mt-4">
-          <div className="flex items-center gap-x-2">
-            <Briefcase />
-            <span>{job.type}</span>
-          </div>
-          <div className="flex items-center gap-x-2">
-            <MapPin />
-            <span>{job.location}</span>
-          </div>
-        </div>
+        {job && (
+          <>
+            <h2>{job.title}</h2>
+            <div className="flex items-center gap-x-4 mt-4">
+              <div className="flex items-center gap-x-2">
+                <Briefcase />
+                <span>{job.type}</span>
+              </div>
+              <div className="flex items-center gap-x-2">
+                <MapPin />
+                <span>{job.location}</span>
+              </div>
+            </div>
+          </>
+        )}
       </div>
-      <div className="mt-4 py-4">
-        <p>{job.description}</p>
-      </div>
+      <div className="mt-4 py-4">{job && <p>{job.description}</p>}</div>
 
       <Separator />
 
@@ -57,60 +108,27 @@ const JobPage = () => {
         <div className="flex flex-col gap-y-4">
           <Label className="text-lg">Full Name</Label>
           <Input
+            name={"fullName"}
             required
-            value={FormData.FullName}
-            onChange={(event) =>
-              setFormData({ ...FormData, FullName: event.target.value })
-            }
+            value={formData.fullName}
+            onChange={handleChange}
           />
         </div>
 
-        <div className="flex flex-col gap-y-4">
-          <Label className="text-lg">
-            Share your academic background and highlight key programming
-            concepts you've mastered. How has your education shaped your current
-            tech skill set ?
-          </Label>
-          <Textarea
-            required
-            value={FormData.a1}
-            onChange={(event) =>
-              setFormData({ ...FormData, a1: event.target.value })
-            }
-          />
-        </div>
-
-        <div className="flex flex-col gap-y-4">
-          <Label className="text-lg">
-            Describe your professional development, emphasizing any
-            certifications obtained. How have these certifications enriched your
-            technical abilities, and can you provide an example of their
-            practical application ?
-          </Label>
-          <Textarea
-            required
-            value={FormData.a2}
-            onChange={(event) =>
-              setFormData({ ...FormData, a2: event.target.value })
-            }
-          />
-        </div>
-
-        <div className="flex flex-col gap-y-4">
-          <Label className="text-lg">
-            Discuss notable projects in your programming experience. What
-            challenges did you face, and how did you apply your skills to
-            overcome them? Highlight the technologies used and the impact of
-            these projects on your overall growth as a prefessional ?
-          </Label>
-          <Textarea
-            required
-            value={FormData.a3}
-            onChange={(event) =>
-              setFormData({ ...FormData, a3: event.target.value })
-            }
-          />
-        </div>
+        {job.questions.map((question, i) => {
+          return (
+            <div key={i} className="mt-4">
+              <h3>{question}</h3>
+              <Textarea
+                className="mt-2"
+                name={`a${i + 1}`}
+                required
+                value={formData[`a${i + 1}`]}
+                onChange={handleChange}
+              />
+            </div>
+          );
+        })}
 
         <div className="flex gap-x-4 items-center">
           <Button type="submit" className="w-fit">
@@ -121,7 +139,7 @@ const JobPage = () => {
             className="w-fit"
             onClick={() =>
               setFormData({
-                FullName: "",
+                fullName: "",
                 a1: "",
                 a2: "",
                 a3: "",
