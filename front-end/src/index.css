@@ -10,7 +10,6 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 69 100% 50%;
     --primary-foreground: 222.2 84% 4.9%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -24,40 +23,45 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
     --radius: 0.5rem;
+
+
+    --background: 0 0% 18%; 
+    --foreground: 0 0% 95%;
+    --card: 24.3 0% 48%;
+    --input: 24.3 0% 48%;; 
+    --radius: 1.5rem;
+    --primary: 24.3 0% 48%;
   }
 
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    --background: 0 0% 5%; 
+    --foreground: 0 0% 90%; 
+    --card: 0 0% 10%; 
+    --card-foreground: 0 0% 90%; 
+    --popover: 0 0% 5%; 
+    --popover-foreground: 0 0% 90%; 
+    --primary: 30 100% 50%; 
+    --primary-foreground: 0 0% 5%; /* Dark text for primary elements */
+    --secondary: 0 0% 15%; /* Dark gray for secondary elements */
+    --secondary-foreground: 0 0% 90%; /* Light gray text for secondary elements */
+    --muted: 0 0% 15%; /* Dark gray for muted elements */
+    --muted-foreground: 0 0% 60%; /* Medium gray for muted text */
+    --accent: 30 100% 50%; /* Bright orange for accent elements */
+    --accent-foreground: 0 0% 90%; /* Light gray for accent text */
+    --destructive: 0 60% 50%; /* Red for destructive actions */
+    --destructive-foreground: 0 0% 90%; /* Light gray text for destructive actions */
+    --border: 0 0% 15%; /* Dark gray for borders */
+    --input: 0 0% 15%; /* Dark gray for inputs */
+    --ring: 30 100% 50%; /* Bright orange for focus rings */
   }
 }
+
 .text-underlay-1 {
-  background: linear-gradient(98deg, #d9ff00 -9.47%, #00a49d 65.47%);
+  background: linear-gradient(
+    98deg,
+    #ffffff -5.47%,
+    #8d8c8c 65.47%
+  ); /* Orange gradient for text */
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -83,7 +87,7 @@
     @apply scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0;
   }
   h3 {
-    @apply scroll-m-20 text-xl font-medium  tracking-tight;
+    @apply scroll-m-20 text-xl font-medium tracking-tight;
   }
   p {
     @apply leading-7 [&:not(:first-child)]:mt-6;

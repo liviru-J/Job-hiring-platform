@@ -132,7 +132,7 @@ const JobPage = () => {
 
         <div className="flex gap-x-4 items-center">
           <Button type="submit" className="w-fit">
-            Submit
+            Submit 
           </Button>
           <Button
             type="button"
