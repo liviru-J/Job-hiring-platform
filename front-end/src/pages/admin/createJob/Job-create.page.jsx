@@ -21,10 +21,13 @@ const JobCreatePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("http://localhost:5000/jobs", {
+    const token = await window.Clerk.session.getToken();
+
+    await fetch("http://localhost:5000/jobs", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
             title: formData.title,
@@ -34,9 +37,7 @@ const JobCreatePage = () => {
             questions: [formData.q1, formData.q2, formData.q3]
         })
     })
-
-
-    console.log(formData);
+    
     setFormData({
         title: "",
         description: "",

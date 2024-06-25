@@ -49,18 +49,25 @@ const JobPage = () => {
 
   const handlesubmit = async (event) => {
     event.preventDefault();
-    const res = await fetch("http://localhost:5000/jobApplications", {
+    if (!user) return;
+    if (!id) return;
+    
+    const token = await window.Clerk.session.getToken();
+
+    await fetch("http://localhost:5000/jobApplications", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        userId: user.user?.id,
-        fullName: formData.fullName,
+        userId: user?.id,
+        fullName: formData?.fullName,
         job: id,
-        answers: [formData.a1, formData.a2, formData.a3],
+        answers: [formData?.a1, formData?.a2, formData?.a3],
       }),
     });
+
     setFormData({
       fullName: "",
       a1: "",

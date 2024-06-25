@@ -22,7 +22,7 @@ const JobPostsSection = () => {
         {jobs.map((job) => {
           return (
             <JobCard
-              key={job.id}
+              key={job._id}
               _id={job._id}
               title={job.title}
               type={job.type}
