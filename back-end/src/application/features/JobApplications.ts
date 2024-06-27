@@ -22,7 +22,12 @@ export const getJobApplication = async (
   next: NextFunction
 ) => {
   try {
-    const jobApplication = await JobApplication.find().populate("job");
+    const { jobId } = req.query;
+    if (!jobId) {
+      const jobApplication = await JobApplication.find().populate("job").exec();
+      return res.status(200).json(jobApplication);
+    }
+    const jobApplication = await JobApplication.find({job: jobId});
     return res.status(200).json(jobApplication);
   } catch (error) {
     return next(error);

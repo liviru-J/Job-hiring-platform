@@ -51,7 +51,7 @@ const JobPage = () => {
     event.preventDefault();
     if (!user) return;
     if (!id) return;
-    
+
     const token = await window.Clerk.session.getToken();
 
     await fetch("http://localhost:5000/jobApplications", {
@@ -109,7 +109,14 @@ const JobPage = () => {
       </div>
       <div className="mt-4 py-4">{job && <p>{job.description}</p>}</div>
 
-      <Separator />
+      <hr
+        style={{
+          border: "none",
+          height: "1px",
+          backgroundColor: "rgba(128, 128, 128, 0.3)",
+          margin: "1px 0",
+        }}
+      />
 
       <form className="py-8 flex flex-col gap-y-6" onSubmit={handlesubmit}>
         <div className="flex flex-col gap-y-4">
@@ -139,7 +146,7 @@ const JobPage = () => {
 
         <div className="flex gap-x-4 items-center">
           <Button type="submit" className="w-fit">
-            Submit 
+            Submit
           </Button>
           <Button
             type="button"

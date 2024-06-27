@@ -12,6 +12,8 @@ import AdminMainLayout from "./layouts/Admin.layout";
 import AdminJobPostsPage from "./pages/admin/jobPosts/Admin-job-posts.page";
 import JobCreatePage from "./pages/admin/createJob/Job-create.page";
 import { ClerkProvider } from "@clerk/clerk-react";
+import AdminJobPage from "./pages/admin/job/Admin-job.page";
+import AdminJobApplicationPage from "./pages/admin/jobApplication/Admin-job-application.page";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -51,8 +53,12 @@ const router = createBrowserRouter([
           },
           {
             path: "job/:id",
-            element: <JobPage />,
+            element: <AdminJobPage />,
           },
+          {
+            path: "job/:id/application/:applicationId",
+            element: <AdminJobApplicationPage />
+          }
         ],
       },
       {
