@@ -2,6 +2,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const JobCreatePage = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +15,7 @@ const JobCreatePage = () => {
     q2: "",
     q3: "",
   });
+  const notify = () => toast.success("Successfully Submitted!");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,7 +26,7 @@ const JobCreatePage = () => {
 
     const token = await window.Clerk.session.getToken();
 
-    await fetch("http://localhost:5000/jobs", {
+    const res = await fetch("http://localhost:5000/jobs", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -37,6 +40,10 @@ const JobCreatePage = () => {
             questions: [formData.q1, formData.q2, formData.q3]
         })
     })
+
+    if (res) {
+      notify();
+    }
     
     setFormData({
         title: "",
@@ -157,6 +164,18 @@ const JobCreatePage = () => {
           Clear
         </Button>
       </form>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 };

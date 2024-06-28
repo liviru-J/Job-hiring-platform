@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import JobApplicationCard from "./components/JobApplicationCard";
 import { Briefcase, MapPin } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 
 const AdminJobPage = () => {
   const [job, setJob] = useState(null);
@@ -97,14 +96,14 @@ const AdminJobPage = () => {
       <div className="py-4">
         <h2>Job Applications</h2>
         <div className="mt-4 flex flex-col gap-y-4">
-          {/* {applications.map((application) => (
+          {applications.map((application) => (
           <JobApplicationCard
             key={application._id}
             fullName={application.fullName}
             _id={application._id}
             jobId={id}
           />
-        ))} */}
+        ))}
         </div>
       </div>
     </div>

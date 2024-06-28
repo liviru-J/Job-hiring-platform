@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/clerk-react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const JobPage = () => {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -20,6 +22,8 @@ const JobPage = () => {
     a2: "",
     a3: "",
   });
+
+  const notify = () => toast.success("Successfully Submitted!");
 
   useEffect(() => {
     if (!isLoaded) {
@@ -54,7 +58,7 @@ const JobPage = () => {
 
     const token = await window.Clerk.session.getToken();
 
-    await fetch("http://localhost:5000/jobApplications", {
+    const res = await fetch("http://localhost:5000/jobApplications", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -67,6 +71,10 @@ const JobPage = () => {
         answers: [formData?.a1, formData?.a2, formData?.a3],
       }),
     });
+
+    if (res) {
+      notify();
+    }
 
     setFormData({
       fullName: "",
@@ -165,6 +173,18 @@ const JobPage = () => {
           </Button>
         </div>
       </form>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 };

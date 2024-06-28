@@ -42,10 +42,13 @@ export default AuthorizationMiddleware;
 //   res: Response,
 //   next: NextFunction
 // ) => {
+//   //@ts-ignore
+//   console.log(req.auth.claims.metadata)
 //     //@ts-ignore
 //   if (req.auth.claims.metadata.role !== "admin") {
 //     throw new ForbiddenError("Admin Only Route!");
 //   }
+
 //   next();
 // };
 
